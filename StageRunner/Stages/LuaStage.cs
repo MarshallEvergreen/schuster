@@ -2,9 +2,9 @@ using System;
 using NLua;
 using Schuster.Exceptions;
 
-namespace Schuster
+namespace Schuster.Stages
 {
-    public class LuaStage
+    public class LuaStage : IStage
     {
         private readonly string _name;
         private readonly LuaTable _table;

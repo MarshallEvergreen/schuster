@@ -8,14 +8,15 @@ using Schuster.Exceptions;
 namespace StageRunnerTest
 {
     [TestFixture]
-    public class StageRunner_RunTests
+    public class SingleStageTests
     {
-        private readonly Mock<IMockCalls> _mockCalls;
-        private readonly LuaTestApi _luaTestApi;
-        private readonly ApiContainer _apiContainer;
-        private readonly StageRunner _stageRunner;
+        private Mock<IMockCalls> _mockCalls;
+        private LuaTestApi _luaTestApi;
+        private ApiContainer _apiContainer;
+        private StageRunner _stageRunner;
 
-        public StageRunner_RunTests()
+        [SetUp]
+        public void Setup()
         {
             _mockCalls = new Mock<IMockCalls>();
             _luaTestApi = new LuaTestApi(_mockCalls.Object);
@@ -44,7 +45,32 @@ namespace StageRunnerTest
                 ";
 
             _stageRunner.Run(script);
-            _mockCalls.Verify(m => m.Call("TestValue"));
+            _mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
+        }
+        
+        [Test]
+        public void SingleStageInCollection_RunsToSuccess_IfConfiguredCorrectly()
+        {
+            const string script = @"
+                    local function SimpleStage()
+                        local self = {}
+
+                        local function CallTestValue()
+                            TestValue('TestValue')
+                        end
+
+                        self.Run = CallTestValue
+
+                        return self
+                    end
+
+                    Stages = {
+                        Stage('MyStage', SimpleStage())
+                    }
+                ";
+
+            _stageRunner.Run(script);
+            _mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
         }
 
         [Test]
