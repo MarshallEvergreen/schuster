@@ -2,6 +2,11 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Schuster</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NLua" Version="1.5.2" />
+    </ItemGroup>
 
 </Project>
