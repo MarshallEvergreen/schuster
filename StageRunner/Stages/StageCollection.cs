@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLua;
@@ -20,5 +21,12 @@ namespace Schuster.Stages
         {
             _stages.FirstOrDefault()?.Run();
         }
+
+        public void Complete()
+        {
+            OnComplete?.Invoke();
+        }
+
+        public event Action OnComplete;
     }
 }

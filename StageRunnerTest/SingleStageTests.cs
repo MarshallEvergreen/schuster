@@ -7,33 +7,15 @@ using Schuster.Exceptions;
 
 namespace StageRunnerTest
 {
-    [TestFixture]
-    public class SingleStageTests
+    public class SingleStageTests : StageRunnerTestContext
     {
-        private Mock<IMockCalls> _mockCalls;
-        private LuaTestApi _luaTestApi;
-        private ApiContainer _apiContainer;
-        private StageRunner _stageRunner;
-
-        [SetUp]
-        public void Setup()
-        {
-            _mockCalls = new Mock<IMockCalls>();
-            _luaTestApi = new LuaTestApi(_mockCalls.Object);
-            _apiContainer = new ApiContainer();
-            _apiContainer.AddLuaApi(_luaTestApi);
-            _stageRunner = new StageRunner(_apiContainer);
-        }
-
-        [Test]
-        public void SingleStage_RunsToSuccess_IfConfiguredCorrectly()
-        {
-            const string script = @"
+        const string SingleStageScript = @"
                     local function SimpleStage()
                         local self = {}
 
                         local function CallTestValue()
                             TestValue('TestValue')
+                            self.Complete()
                         end
 
                         self.Run = CallTestValue
@@ -43,9 +25,22 @@ namespace StageRunnerTest
 
                     Stages = Stage('MyStage', SimpleStage())
                 ";
-
-            _stageRunner.Run(script);
+        
+        [Test]
+        public void SingleStage_RunsToSuccess_IfConfiguredCorrectly()
+        {
+            _stageRunner.Run(SingleStageScript);
             _mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
+        }
+        
+        [Test]
+        public void SingleStage_RunToCompletion_StatusUpdates_IfConfiguredCorrectly()
+        {
+            _stageRunner.Run(SingleStageScript);
+            
+            _statusUpdates.Should().Equal(
+                StageRunnerStatus.Running, 
+                StageRunnerStatus.Success);
         }
         
         [Test]

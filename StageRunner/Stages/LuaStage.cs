@@ -32,5 +32,12 @@ namespace Schuster.Stages
                 throw new ErrorInRunFunctionException($"Error calling run function for {_name}: {e.Message}");
             }
         }
+
+        public void Complete()
+        {
+            OnComplete?.Invoke();
+        }
+
+        public event Action OnComplete;
     }
 }
