@@ -17,6 +17,9 @@ namespace Schuster.Stages
                 _stages.Add(stage);
             }
         }
+
+        public event Action OnComplete;
+
         public void Run()
         {
             _stages.FirstOrDefault()?.Run();
@@ -26,7 +29,5 @@ namespace Schuster.Stages
         {
             OnComplete?.Invoke();
         }
-
-        public event Action OnComplete;
     }
 }
