@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Schuster;
 using Moq;
+using StageRunnerTest.Helpers;
 
 namespace StageRunnerTest
 {
