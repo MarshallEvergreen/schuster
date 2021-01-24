@@ -14,6 +14,8 @@ namespace Schuster.Stages
             _name = name;
             _table = luaTable;
         }
+        
+        public event Action OnComplete;
 
         public void Run()
         {
@@ -37,7 +39,5 @@ namespace Schuster.Stages
         {
             OnComplete?.Invoke();
         }
-
-        public event Action OnComplete;
     }
 }

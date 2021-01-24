@@ -34,6 +34,14 @@ namespace StageRunnerTest
         }
         
         [Test]
+        public void SingleStage_CanBeRunMultipleTimes()
+        {
+            _stageRunner.Run(SingleStageScript);
+            _stageRunner.Run(SingleStageScript);
+            _mockCalls.Verify(m => m.Call("TestValue"), Times.Exactly(2));
+        }
+        
+        [Test]
         public void SingleStage_RunToCompletion_StatusUpdates_IfConfiguredCorrectly()
         {
             _stageRunner.Run(SingleStageScript);
