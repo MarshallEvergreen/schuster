@@ -1,7 +1,7 @@
 using NLua;
 using Schuster;
 
-namespace StageRunnerTest
+namespace StageRunnerTest.Helpers
 {
     public class LuaTestApi : ILuaApi
     {

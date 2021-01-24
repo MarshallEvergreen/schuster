@@ -1,6 +1,6 @@
 using Schuster;
 
-namespace StageRunnerTest
+namespace StageRunnerTest.Helpers
 {
     public interface IMockCalls
     {
