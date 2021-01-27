@@ -1,34 +1,33 @@
 using System;
 using NLua;
+using Schuster.Exceptions;
 using Schuster.Tasks;
 
 namespace Schuster
 {
 	public class Environment
 	{
-		private readonly Lua _lua;
-		private readonly ITask _rootTask;
-		private readonly TaskExtension _taskExtension;
+		private readonly TaskGroup _rootTaskGroup;
 
 		public Environment(string luaToRun, ExtensionCollection extensionCollection)
 		{
-			_lua = new Lua();
-			_taskExtension = new TaskExtension();
+			var lua = new Lua();
+			var taskExtension = new TaskExtension();
+			taskExtension.RegisterExtension(lua);
+			extensionCollection.RegisterExtensions(lua);
 
-			_taskExtension.RegisterExtension(_lua);
-			extensionCollection.RegisterExtensions(_lua);
+			lua.DoString(luaToRun);
 
-			_lua.DoString(luaToRun);
+			var tasks = lua["Pipeline"];
 
-			var tasks = _lua["Pipeline"];
+			if (tasks is null)
+			{
+				throw new PipelineNotFoundException();
+			}
 			if (tasks.GetType() == typeof(LuaTable))
 			{
-				_rootTask = new TaskGroup((LuaTable) tasks);
-			}
-			else if (tasks.GetType() == typeof(LuaTask))
-			{
-				_rootTask = (LuaTask) tasks;
-				_rootTask.OnComplete += () => { OnComplete?.Invoke(PipelineStatus.Success); };
+				_rootTaskGroup = new TaskGroup((LuaTable) tasks);
+				_rootTaskGroup.OnComplete += () => { OnComplete?.Invoke(PipelineStatus.Success); };
 			}
 		}
 
@@ -36,7 +35,7 @@ namespace Schuster
 
 		public void Run()
 		{
-			_rootTask.Run();
+			_rootTaskGroup.Run();
 		}
 	}
 }

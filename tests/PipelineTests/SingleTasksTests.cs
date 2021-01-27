@@ -23,7 +23,9 @@ namespace PipelineTests
 
                     MyTask.RunFunction = RunFunction;
 
-                    Pipeline = MyTask
+                    Pipeline = {
+						MyTask
+					}
                 ";
 
 		[Test]
@@ -70,19 +72,38 @@ namespace PipelineTests
 			Pipeline.Run(script);
 			_mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
 		}
+		
+		[Test]
+		public void SingleTask_GlobalPipelineTableNotDefined_NotifiesUser()
+		{
+			const string script = @"
+					-- Pipeline deliberately misspelled
+                    Pipelinee = {
+						LuaTask('MyTask')
+					}
+                ";
 
+			Action act = () => Pipeline.Run(script);
+
+			act.Should()
+				.Throw<PipelineNotFoundException>()
+				.WithMessage("Global Pipeline table not found in script");
+		}
+		
 		[Test]
 		public void SingleTask_RunFunctionNotSpecified_NotifiesUser()
 		{
 			const string script = @"
-                    Pipeline = LuaTask('MyTask')
+                    Pipeline = {
+						LuaTask('MyTask')
+					}
                 ";
 
 			Action act = () => Pipeline.Run(script);
 
 			act.Should()
 				.Throw<MissingRunFunctionException>()
-				.WithMessage("Run function not defined for Task MyTask");
+				.WithMessage("Run function not defined for task: MyTask");
 		}
 
 		[Test]
@@ -97,7 +118,9 @@ namespace PipelineTests
                     local MyTask = LuaTask('MyTask')
                     MyTask.RunFunction = CallTestValue;
                     
-                    Pipeline = MyTask
+                    Pipeline = {
+						MyTask
+					}
                 ";
 
 			Action act = () => Pipeline.Run(script);

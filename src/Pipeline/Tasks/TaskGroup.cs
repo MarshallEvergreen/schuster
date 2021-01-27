@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using NLua;
 
 namespace Schuster.Tasks
@@ -8,6 +7,7 @@ namespace Schuster.Tasks
 	public class TaskGroup : ITask
 	{
 		private readonly List<ITask> _tasks;
+		private int _index;
 
 		public TaskGroup(LuaTable tasks)
 		{
@@ -22,7 +22,21 @@ namespace Schuster.Tasks
 
 		public void Run()
 		{
-			_tasks.FirstOrDefault()?.Run();
+			_index = 0;
+			var currentTask = _tasks[_index];
+			currentTask.OnComplete += () =>
+			{
+				_index++;
+				if (_index < _tasks.Count)
+				{
+					Run();
+				}
+				else
+				{
+					Succeed();
+				}
+			};
+			currentTask.Run();
 		}
 
 		public void Succeed()

@@ -21,7 +21,7 @@ namespace Schuster.Tasks
 		{
 			if (RunFunction is null)
 			{
-				throw new MissingRunFunctionException($"Run function not defined for task {_name}");
+				throw new MissingRunFunctionException(_name);
 			}
 
 			try
@@ -30,7 +30,7 @@ namespace Schuster.Tasks
 			}
 			catch (Exception e)
 			{
-				throw new ErrorInRunFunctionException($"Error calling run function for {_name}: {e.Message}");
+				throw new ErrorInRunFunctionException(_name, e.Message);
 			}
 		}
 

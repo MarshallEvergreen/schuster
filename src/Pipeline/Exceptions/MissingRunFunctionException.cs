@@ -4,8 +4,8 @@ namespace Schuster.Exceptions
 {
 	public class MissingRunFunctionException : Exception
 	{
-		public MissingRunFunctionException(string message)
-			: base(message)
+		public MissingRunFunctionException(string taskName)
+			: base($"Run function not defined for task: {taskName}")
 		{
 		}
 	}
