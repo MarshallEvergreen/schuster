@@ -1,124 +1,110 @@
 using System;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using Schuster;
-using Moq;
 using Schuster.Exceptions;
 
 namespace StageRunnerTest
 {
-    public class SingleStageTests : StageRunnerTestContext
-    {
-        const string SingleStageScript = @"
-                    local function SimpleStage()
-                        local self = {}
+	public class SingleStageTests : StageRunnerTestContext
+	{
+		private const string SingleStageScript = @"
+                    local MyStage = LuaStage('MyStage')
 
-                        local function CallTestValue()
-                            TestValue('TestValue')
-                            self.Complete()
-                        end
-
-                        self.Run = CallTestValue
-
-                        return self
+                    local function GenericMethod(task)
+                        TestValue('TestValue')
+                        task:Succeed()
                     end
 
-                    Stages = Stage('MyStage', SimpleStage())
+                    local function RunFunction()
+                        GenericMethod(MyStage)
+                    end
+
+                    MyStage.RunFunction = RunFunction;
+
+                    Stages = MyStage
                 ";
-        
-        [Test]
-        public void SingleStage_RunsToSuccess_IfConfiguredCorrectly()
-        {
-            _stageRunner.Run(SingleStageScript);
-            _mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
-        }
-        
-        [Test]
-        public void SingleStage_CanBeRunMultipleTimes()
-        {
-            _stageRunner.Run(SingleStageScript);
-            _stageRunner.Run(SingleStageScript);
-            _mockCalls.Verify(m => m.Call("TestValue"), Times.Exactly(2));
-        }
-        
-        [Test]
-        public void SingleStage_RunToCompletion_StatusUpdates_IfConfiguredCorrectly()
-        {
-            _stageRunner.Run(SingleStageScript);
-            
-            _statusUpdates.Should().Equal(
-                StageRunnerStatus.Running, 
-                StageRunnerStatus.Success);
-        }
-        
-        [Test]
-        public void SingleStageInCollection_RunsToSuccess_IfConfiguredCorrectly()
-        {
-            const string script = @"
-                    local function SimpleStage()
-                        local self = {}
 
-                        local function CallTestValue()
-                            TestValue('TestValue')
-                        end
+		[Test]
+		public void SingleStage_RunsToSuccess_IfConfiguredCorrectly()
+		{
+			_stageRunner.Run(SingleStageScript);
+			_mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
+		}
 
-                        self.Run = CallTestValue
+		[Test]
+		public void SingleStage_CanBeRunMultipleTimes()
+		{
+			_stageRunner.Run(SingleStageScript);
+			_stageRunner.Run(SingleStageScript);
+			_mockCalls.Verify(m => m.Call("TestValue"), Times.Exactly(2));
+		}
 
-                        return self
+		[Test]
+		public void SingleStage_RunToCompletion_StatusUpdates_IfConfiguredCorrectly()
+		{
+			_stageRunner.Run(SingleStageScript);
+
+			_statusUpdates.Should().Equal(
+				StageRunnerStatus.Running,
+				StageRunnerStatus.Success);
+		}
+
+		[Test]
+		public void SingleStageInCollection_RunsToSuccess_IfConfiguredCorrectly()
+		{
+			const string script = @"
+                    local function CallTestValue()
+                        TestValue('TestValue')
                     end
+
+                    local MyStage = LuaStage('MyStage')
+                    MyStage.RunFunction = CallTestValue;
 
                     Stages = {
-                        Stage('MyStage', SimpleStage())
+                        MyStage
                     }
                 ";
 
-            _stageRunner.Run(script);
-            _mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
-        }
+			_stageRunner.Run(script);
+			_mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
+		}
 
-        [Test]
-        public void SingleStage_RunFunctionNotSpecified_NotifiesUser()
-        {
-            const string script = @"
-                    local function SimpleStage()
-                        local self = {}
-                        return self
-                    end
-
-                    Stages = Stage('MyStage', SimpleStage())
+		[Test]
+		public void SingleStage_RunFunctionNotSpecified_NotifiesUser()
+		{
+			const string script = @"
+                    Stages = LuaStage('MyStage')
                 ";
 
-            Action act = () => _stageRunner.Run(script);
+			Action act = () => _stageRunner.Run(script);
 
-            act.Should()
-                .Throw<MissingRunFunctionException>()
-                .WithMessage("Run function not defined for stage MyStage");
-        }
+			act.Should()
+				.Throw<MissingRunFunctionException>()
+				.WithMessage("Run function not defined for stage MyStage");
+		}
 
-        [Test]
-        public void SingleStage_ErrorInRunFunction_NotifiesUser()
-        {
-            const string script = @"
-                    local function SimpleStage()
-                        local self = {}
-
-                        local function CallTestValue()
-                            -- Non existent function
-                            XXX('TestValue')
-                        end
-
-                        self.Run = CallTestValue
-
-                        return self
+		[Test]
+		public void SingleStage_ErrorInRunFunction_NotifiesUser()
+		{
+			const string script = @"
+                    local function CallTestValue()
+                        -- Non existent function
+                        XXX('TestValue')
                     end
-                    Stages = Stage('MyStage', SimpleStage())
+
+                    local MyStage = LuaStage('MyStage')
+                    MyStage.RunFunction = CallTestValue;
+                    
+                    Stages = MyStage
                 ";
 
-            Action act = () => _stageRunner.Run(script);
+			Action act = () => _stageRunner.Run(script);
 
-            act.Should()
-                .Throw<ErrorInRunFunctionException>()
-                .WithMessage("*Error calling run function for MyStage*");
-        }
-    }
+			act.Should()
+				.Throw<ErrorInRunFunctionException>()
+				.WithMessage("*Error calling run function for MyStage*");
+		}
+	}
 }

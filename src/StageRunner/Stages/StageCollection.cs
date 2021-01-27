@@ -5,29 +5,29 @@ using NLua;
 
 namespace Schuster.Stages
 {
-    public class StageCollection : IStage
-    {
-        private readonly List<IStage> _stages;
+	public class StageCollection : IStage
+	{
+		private readonly List<IStage> _stages;
 
-        public StageCollection(LuaTable stages)
-        {
-            _stages = new List<IStage>();
-            foreach (IStage stage in stages.Values)
-            {
-                _stages.Add(stage);
-            }
-        }
+		public StageCollection(LuaTable stages)
+		{
+			_stages = new List<IStage>();
+			foreach (IStage stage in stages.Values)
+			{
+				_stages.Add(stage);
+			}
+		}
 
-        public event Action OnComplete;
+		public event Action OnComplete;
 
-        public void Run()
-        {
-            _stages.FirstOrDefault()?.Run();
-        }
+		public void Run()
+		{
+			_stages.FirstOrDefault()?.Run();
+		}
 
-        public void Complete()
-        {
-            OnComplete?.Invoke();
-        }
-    }
+		public void Succeed()
+		{
+			OnComplete?.Invoke();
+		}
+	}
 }

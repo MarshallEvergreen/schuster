@@ -1,8 +1,9 @@
 using NLua;
+
 namespace Schuster
 {
-    public interface ILuaApi
-    {
-        public void RegisterTo(Lua lua);
-    }
+	public interface ILuaApi
+	{
+		public void RegisterTo(Lua lua);
+	}
 }

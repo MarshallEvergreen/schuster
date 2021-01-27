@@ -1,8 +1,8 @@
 namespace Schuster
 {
-    public enum StageRunnerStatus
-    {
-        Running,
-        Success
-    }
+	public enum StageRunnerStatus
+	{
+		Running,
+		Success
+	}
 }

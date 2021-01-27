@@ -2,11 +2,11 @@ using System;
 
 namespace Schuster.Stages
 {
-    public interface IStage
-    {
-        event Action OnComplete;
+	public interface IStage
+	{
+		event Action OnComplete;
 
-        void Run();
-        void Complete();
-    }
+		void Run();
+		void Succeed();
+	}
 }
