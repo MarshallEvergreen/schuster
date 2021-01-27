@@ -1,10 +1,10 @@
 using Schuster;
 
-namespace StageRunnerTest.Helpers
+namespace PipelineTests.Helpers
 {
 	public interface IMockCalls
 	{
 		void Call(string value);
-		void Call(StageRunnerStatus status);
+		void Call(PipelineStatus status);
 	}
 }

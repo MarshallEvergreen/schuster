@@ -4,9 +4,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{3A75FAD4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BA46A7CD-60FE-43F7-81BD-58E394353029}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StageRunner", "src\StageRunner\StageRunner.csproj", "{0CC5A50F-E695-4B79-BA01-4B731E99FBF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pipeline", "src\Pipeline\Pipeline.csproj", "{0CC5A50F-E695-4B79-BA01-4B731E99FBF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StageRunnerTest", "tests\StageRunnerTest\StageRunnerTest.csproj", "{9BEFE0E9-5216-45B7-8367-467895585181}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipelineTests", "tests\PipelineTests\PipelineTests.csproj", "{9BEFE0E9-5216-45B7-8367-467895585181}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

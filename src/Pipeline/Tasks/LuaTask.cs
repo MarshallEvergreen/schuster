@@ -2,13 +2,13 @@ using System;
 using NLua;
 using Schuster.Exceptions;
 
-namespace Schuster.Stages
+namespace Schuster.Tasks
 {
-	public class LuaStage : IStage
+	public class LuaTask : ITask
 	{
 		private readonly string _name;
 
-		public LuaStage(string name)
+		public LuaTask(string name)
 		{
 			_name = name;
 		}
@@ -21,7 +21,7 @@ namespace Schuster.Stages
 		{
 			if (RunFunction is null)
 			{
-				throw new MissingRunFunctionException($"Run function not defined for stage {_name}");
+				throw new MissingRunFunctionException($"Run function not defined for task {_name}");
 			}
 
 			try

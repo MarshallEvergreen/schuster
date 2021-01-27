@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -15,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\StageRunner\StageRunner.csproj" />
+      <ProjectReference Include="..\..\src\Pipeline\Pipeline.csproj" />
     </ItemGroup>
 
 </Project>

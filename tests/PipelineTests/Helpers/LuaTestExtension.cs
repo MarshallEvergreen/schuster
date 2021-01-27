@@ -1,21 +1,21 @@
 using NLua;
 using Schuster;
 
-namespace StageRunnerTest.Helpers
+namespace PipelineTests.Helpers
 {
-	public class LuaTestApi : ILuaApi
+	public class LuaTestExtension : ILuaExtension
 	{
 		private readonly IMockCalls _mockCalls;
 
-		public LuaTestApi(IMockCalls mockCalls)
+		public LuaTestExtension(IMockCalls mockCalls)
 		{
 			_mockCalls = mockCalls;
 		}
 
-		public void RegisterTo(Lua lua)
+		public void RegisterExtension(Lua lua)
 		{
 			lua.RegisterFunction("TestValue", this,
-				typeof(LuaTestApi).GetMethod("TestValue"));
+				typeof(LuaTestExtension).GetMethod("TestValue"));
 		}
 
 		public void TestValue(string testValue)

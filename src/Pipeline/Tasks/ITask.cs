@@ -1,8 +1,8 @@
 using System;
 
-namespace Schuster.Stages
+namespace Schuster.Tasks
 {
-	public interface IStage
+	public interface ITask
 	{
 		event Action OnComplete;
 

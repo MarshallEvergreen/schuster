@@ -1,6 +1,6 @@
 namespace Schuster
 {
-	public enum StageRunnerStatus
+	public enum PipelineStatus
 	{
 		Running,
 		Success
