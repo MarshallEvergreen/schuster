@@ -12,9 +12,16 @@ namespace Schuster.Tasks
 		public TaskGroup(LuaTable tasks)
 		{
 			_tasks = new List<ITask>();
-			foreach (ITask task in tasks.Values)
+			foreach (var task in tasks.Values)
 			{
-				_tasks.Add(task);
+				if (task.GetType() == typeof(LuaTable))
+				{
+					_tasks.Add(new TaskGroup((LuaTable) task));
+				}
+				else
+				{
+					_tasks.Add((LuaTask) task);
+				}
 			}
 		}
 
