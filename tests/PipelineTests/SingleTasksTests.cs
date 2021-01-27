@@ -54,26 +54,6 @@ namespace PipelineTests
 		}
 
 		[Test]
-		public void SingleTaskInGroup_RunsToSuccess_IfConfiguredCorrectly()
-		{
-			const string script = @"
-                    local function CallTestValue()
-                        TestValue('TestValue')
-                    end
-
-                    local MyTask = LuaTask('MyTask')
-                    MyTask.RunFunction = CallTestValue;
-
-                    Pipeline = {
-                        MyTask
-                    }
-                ";
-
-			Pipeline.Run(script);
-			_mockCalls.Verify(m => m.Call("TestValue"), Times.Once);
-		}
-		
-		[Test]
 		public void SingleTask_GlobalPipelineTableNotDefined_NotifiesUser()
 		{
 			const string script = @"

@@ -22,7 +22,6 @@ namespace Schuster.Tasks
 
 		public void Run()
 		{
-			_index = 0;
 			var currentTask = _tasks[_index];
 			currentTask.OnComplete += () =>
 			{
