@@ -2,6 +2,7 @@
 
 # schuster
 Schuster aims to provide an easy way to create pipelines in lua that consist of small tasks which execute in sequential order.
+
 A pipeline can: 
 * be the user Run
 * be Aborted by the user
