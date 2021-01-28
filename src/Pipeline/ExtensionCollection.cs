@@ -5,18 +5,18 @@ namespace Schuster
 {
 	public class ExtensionCollection
 	{
-		private readonly List<ILuaExtension> _luaApis = new();
+		private readonly List<ILuaExtension> _luaExtensions = new();
 
-		public void AddLuaApi(ILuaExtension luaExtension)
+		public void AddLuaExtension(ILuaExtension luaExtension)
 		{
-			_luaApis.Add(luaExtension);
+			_luaExtensions.Add(luaExtension);
 		}
 
-		public void RegisterExtensions(Lua lua)
+		public void LoadExtensions(Lua lua)
 		{
-			foreach (var luaApi in _luaApis)
+			foreach (var extension in _luaExtensions)
 			{
-				luaApi.RegisterExtension(lua);
+				extension.LoadExtension(lua);
 			}
 		}
 	}

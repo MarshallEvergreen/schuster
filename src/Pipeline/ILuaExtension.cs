@@ -4,6 +4,6 @@ namespace Schuster
 {
 	public interface ILuaExtension
 	{
-		public void RegisterExtension(Lua lua);
+		public void LoadExtension(Lua lua);
 	}
 }

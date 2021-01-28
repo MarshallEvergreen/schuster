@@ -15,7 +15,7 @@ namespace PipelineTests.TestFixtures
 			_mockCalls = new Mock<IMockCalls>();
 			LuaTestExtension = new LuaTestExtension(_mockCalls.Object);
 			ExtensionCollection = new ExtensionCollection();
-			ExtensionCollection.AddLuaApi(LuaTestExtension);
+			ExtensionCollection.AddLuaExtension(LuaTestExtension);
 			Pipeline = new Pipeline(ExtensionCollection);
 
 			_statusUpdates = new List<PipelineUpdate>();

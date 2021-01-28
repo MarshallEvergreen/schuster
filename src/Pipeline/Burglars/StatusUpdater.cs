@@ -3,12 +3,12 @@ using Schuster.Tasks;
 
 namespace Schuster.Burglars
 {
-	public class ProgressUpdater : TaskBurglar
+	public class StatusUpdater : TaskBurglar
 	{
 		private double _completedTasks;
 		private double _numberOfTasks;
 
-		public event Action<PipelineUpdate> ProgressUpdate;
+		public event Action<PipelineUpdate> StatusUpdate;
 
 		public override void BreakIn(LuaTask luaTask)
 		{
@@ -27,13 +27,13 @@ namespace Schuster.Burglars
 		{
 			if (_completedTasks == 0)
 			{
-				ProgressUpdate?.Invoke(
+				StatusUpdate?.Invoke(
 					new PipelineUpdate(status, 0.0));
 			}
 			else
 			{
 				var progress = _completedTasks / _numberOfTasks * 100;
-				ProgressUpdate?.Invoke(
+				StatusUpdate?.Invoke(
 					new PipelineUpdate(status, progress));
 			}
 		}

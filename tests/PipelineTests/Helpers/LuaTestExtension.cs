@@ -12,7 +12,7 @@ namespace PipelineTests.Helpers
 			_mockCalls = mockCalls;
 		}
 
-		public void RegisterExtension(Lua lua)
+		public void LoadExtension(Lua lua)
 		{
 			lua.RegisterFunction("TestValue", this,
 				typeof(LuaTestExtension).GetMethod("TestValue"));
