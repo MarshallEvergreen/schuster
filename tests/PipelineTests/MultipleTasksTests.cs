@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PipelineTests.TestFixtures;
 using Schuster;
 
 namespace PipelineTests
@@ -56,8 +57,18 @@ namespace PipelineTests
 			Pipeline.Run(MultipleTaskScript);
 
 			_statusUpdates.Should().Equal(
-				PipelineStatus.Running,
-				PipelineStatus.Success);
+				new PipelineUpdate(
+					PipelineStatus.Running,
+					0.0
+				),
+				new PipelineUpdate(
+					PipelineStatus.Running,
+					50.0
+				),
+				new PipelineUpdate(
+					PipelineStatus.Success,
+					100.0
+				));
 		}
 	}
 }

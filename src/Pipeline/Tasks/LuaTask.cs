@@ -1,5 +1,6 @@
 using System;
 using NLua;
+using Schuster.Burglars;
 using Schuster.Exceptions;
 
 namespace Schuster.Tasks
@@ -37,6 +38,11 @@ namespace Schuster.Tasks
 		public void Succeed()
 		{
 			OnComplete?.Invoke();
+		}
+
+		public void Allow(TaskBurglar burglar)
+		{
+			burglar.BreakIn(this);
 		}
 	}
 }

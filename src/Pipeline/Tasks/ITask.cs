@@ -1,4 +1,5 @@
 using System;
+using Schuster.Burglars;
 
 namespace Schuster.Tasks
 {
@@ -8,5 +9,6 @@ namespace Schuster.Tasks
 
 		void Run();
 		void Succeed();
+		void Allow(TaskBurglar burglar);
 	}
 }

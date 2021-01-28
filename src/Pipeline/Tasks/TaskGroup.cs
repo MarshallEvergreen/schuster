@@ -1,26 +1,26 @@
 using System;
 using System.Collections.Generic;
 using NLua;
+using Schuster.Burglars;
 
 namespace Schuster.Tasks
 {
 	public class TaskGroup : ITask
 	{
-		private readonly List<ITask> _tasks;
 		private int _index;
 
 		public TaskGroup(LuaTable tasks)
 		{
-			_tasks = new List<ITask>();
+			Tasks = new List<ITask>();
 			foreach (var task in tasks.Values)
 			{
 				if (task.GetType() == typeof(LuaTable))
 				{
-					_tasks.Add(new TaskGroup((LuaTable) task));
+					Tasks.Add(new TaskGroup((LuaTable) task));
 				}
 				else
 				{
-					_tasks.Add((LuaTask) task);
+					Tasks.Add((LuaTask) task);
 				}
 			}
 		}
@@ -29,11 +29,11 @@ namespace Schuster.Tasks
 
 		public void Run()
 		{
-			var currentTask = _tasks[_index];
+			var currentTask = Tasks[_index];
 			currentTask.OnComplete += () =>
 			{
 				_index++;
-				if (_index < _tasks.Count)
+				if (_index < Tasks.Count)
 				{
 					Run();
 				}
@@ -44,10 +44,17 @@ namespace Schuster.Tasks
 			};
 			currentTask.Run();
 		}
+		
+		public List<ITask> Tasks { get; }
 
 		public void Succeed()
 		{
 			OnComplete?.Invoke();
+		}
+
+		public void Allow(TaskBurglar burglar)
+		{
+			burglar.BreakIn(this);
 		}
 	}
 }

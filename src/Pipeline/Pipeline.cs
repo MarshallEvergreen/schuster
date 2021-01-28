@@ -12,13 +12,11 @@ namespace Schuster
 			_extensionCollection = extensionCollection;
 		}
 
-		public event Action<PipelineStatus> StatusUpdate;
-
+		public event Action<PipelineUpdate> Update;
 		public void Run(string luaToRun)
 		{
-			StatusUpdate?.Invoke(PipelineStatus.Running);
 			_currentEnvironment = new Environment(luaToRun, _extensionCollection);
-			_currentEnvironment.OnComplete += status => StatusUpdate?.Invoke(status);
+			_currentEnvironment.Update += update => Update?.Invoke(update);
 			_currentEnvironment.Run();
 		}
 	}

@@ -4,7 +4,7 @@ using NUnit.Framework;
 using PipelineTests.Helpers;
 using Schuster;
 
-namespace PipelineTests
+namespace PipelineTests.TestFixtures
 {
 	[TestFixture]
 	public class PipelineTestFixture
@@ -18,12 +18,12 @@ namespace PipelineTests
 			ExtensionCollection.AddLuaApi(LuaTestExtension);
 			Pipeline = new Pipeline(ExtensionCollection);
 
-			_statusUpdates = new List<PipelineStatus>();
+			_statusUpdates = new List<PipelineUpdate>();
 
-			_mockCalls.Setup(m => m.Call(It.IsAny<PipelineStatus>()))
-				.Callback<PipelineStatus>(update => { _statusUpdates.Add(update); });
+			_mockCalls.Setup(m => m.Call(It.IsAny<PipelineUpdate>()))
+				.Callback<PipelineUpdate>(update => { _statusUpdates.Add(update); });
 
-			Pipeline.StatusUpdate += status => { _mockCalls.Object.Call(status); };
+			Pipeline.Update += status => { _mockCalls.Object.Call(status); };
 		}
 
 		protected Mock<IMockCalls> _mockCalls;
@@ -31,6 +31,6 @@ namespace PipelineTests
 		protected ExtensionCollection ExtensionCollection;
 		protected Pipeline Pipeline;
 
-		protected List<PipelineStatus> _statusUpdates;
+		protected List<PipelineUpdate> _statusUpdates;
 	}
 }

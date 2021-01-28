@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using PipelineTests.TestFixtures;
 using Schuster;
 using Schuster.Exceptions;
 
@@ -49,8 +50,14 @@ namespace PipelineTests
 			Pipeline.Run(SingleTaskScript);
 
 			_statusUpdates.Should().Equal(
-				PipelineStatus.Running,
-				PipelineStatus.Success);
+				new PipelineUpdate(
+					PipelineStatus.Running,
+					0.0
+				),
+				new PipelineUpdate(
+					PipelineStatus.Success,
+					100.0
+				));
 		}
 
 		[Test]
@@ -69,7 +76,7 @@ namespace PipelineTests
 				.Throw<PipelineNotFoundException>()
 				.WithMessage("Global Pipeline table not found in script");
 		}
-		
+
 		[Test]
 		public void SingleTask_RunFunctionNotSpecified_NotifiesUser()
 		{
