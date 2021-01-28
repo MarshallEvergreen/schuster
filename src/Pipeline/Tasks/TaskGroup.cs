@@ -25,6 +25,8 @@ namespace Schuster.Tasks
 			}
 		}
 
+		public List<ITask> Tasks { get; }
+
 		public event Action OnComplete;
 
 		public void Run()
@@ -44,8 +46,6 @@ namespace Schuster.Tasks
 			};
 			currentTask.Run();
 		}
-		
-		public List<ITask> Tasks { get; }
 
 		public void Succeed()
 		{

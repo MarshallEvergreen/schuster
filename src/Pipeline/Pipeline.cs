@@ -13,6 +13,7 @@ namespace Schuster
 		}
 
 		public event Action<PipelineUpdate> Update;
+
 		public void Run(string luaToRun)
 		{
 			_currentEnvironment = new Environment(luaToRun, _extensionCollection);

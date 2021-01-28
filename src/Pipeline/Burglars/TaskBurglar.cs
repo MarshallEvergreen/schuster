@@ -10,11 +10,11 @@ namespace Schuster.Burglars
 			{
 				if (task.GetType() == typeof(TaskGroup))
 				{
-					BreakIn((TaskGroup)task);
+					BreakIn((TaskGroup) task);
 				}
 				else if (task.GetType() == typeof(LuaTask))
 				{
-					BreakIn((LuaTask)task);
+					BreakIn((LuaTask) task);
 				}
 			}
 		}

@@ -5,11 +5,11 @@ namespace Schuster.Burglars
 {
 	public class ProgressUpdater : TaskBurglar
 	{
-		private double _numberOfTasks;
 		private double _completedTasks;
+		private double _numberOfTasks;
 
 		public event Action<PipelineUpdate> ProgressUpdate;
-		
+
 		public override void BreakIn(LuaTask luaTask)
 		{
 			_numberOfTasks++;
@@ -17,10 +17,12 @@ namespace Schuster.Burglars
 			{
 				_completedTasks++;
 				SendUpdate(
-					Math.Abs(_numberOfTasks - _completedTasks) > 0.001 
-						? PipelineStatus.Running : PipelineStatus.Success);
+					Math.Abs(_numberOfTasks - _completedTasks) > 0.001
+						? PipelineStatus.Running
+						: PipelineStatus.Success);
 			};
 		}
+
 		public void SendUpdate(PipelineStatus status)
 		{
 			if (_completedTasks == 0)
@@ -30,11 +32,10 @@ namespace Schuster.Burglars
 			}
 			else
 			{
-				var progress = (_completedTasks / _numberOfTasks) * 100;
+				var progress = _completedTasks / _numberOfTasks * 100;
 				ProgressUpdate?.Invoke(
 					new PipelineUpdate(status, progress));
 			}
-			
 		}
 	}
 }

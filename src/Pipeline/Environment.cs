@@ -8,8 +8,9 @@ namespace Schuster
 {
 	public class Environment
 	{
-		private readonly TaskGroup _rootTaskGroup;
 		private readonly ProgressUpdater _progressUpdater;
+		private readonly TaskGroup _rootTaskGroup;
+
 		public Environment(string luaToRun, ExtensionCollection extensionCollection)
 		{
 			var lua = new Lua();
